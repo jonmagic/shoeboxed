@@ -35,8 +35,9 @@ In addition you will need to add an endpoint to your application that Shoeboxed 
 Armed with the app name and callback url you can generate an authentication url:
 
 ```ruby
-> :app_name => "Woot!",
-  :callback_url => "http://foo.bar/shoeboxed/callback"
+> Shoeboxed.authentication_url \
+    :app_name => "Woot!",
+    :callback_url => "http://foo.bar/shoeboxed/callback"
 => "https://api.shoeboxed.com/v1/ws/api.htm?SignIn=1&appname=Hoyt+Accounting&appurl=http%3A%2F%2Ffoo.bar%2Fshoeboxed%2Fcallback&appparams="
 ```
 
