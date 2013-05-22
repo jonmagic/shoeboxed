@@ -70,8 +70,10 @@ In this example the document is a receipt image. The guid, or unique id, is used
 Get document status by guid. If you passed a unique id (guid) to the upload method when uploading the document you can later look it up by that guid to see whether it has finished processing, what type of document it is, and get the Shoeboxed document id (needed for making single API request to get the document details).
 
 ```ruby
-> shoeboxed.status("033c9fa8-c335-11e2-9172-dc397603307a")
-=> {:document_type => "Receipt", :document_id => 67789, :status => "DONE"}
+> status = shoeboxed.status("033c9fa8-c335-11e2-9172-dc397603307a")
+=> #<Shoeboxed::Document::Status...>
+> status.done?
+=> true
 ```
 
 ### Receipts
