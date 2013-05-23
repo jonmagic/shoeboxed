@@ -61,10 +61,18 @@ In this example the document is a receipt image. The guid, or unique id, is used
 => #<File...>
 > guid = SimpleUUID::UUID.new.to_guid
 => "033c9fa8-c335-11e2-9172-dc397603307a"
-> shoeboxed.upload(document, :receipt, guid)
+> shoeboxed.upload(document, {:type => :receipt, :guid => guid})
 => true
 ```
 
+Please note that the options hash is optional. You can upload the document without setting type or guid.
+
+```ruby
+> document = File.open("receipt.jpg")
+=> #<File...>
+> shoeboxed.upload(document)
+=> true
+```
 ### Document Status
 
 Get document status by guid. If you passed a unique id (guid) to the upload method when uploading the document you can later look it up by that guid to see whether it has finished processing, what type of document it is, and get the Shoeboxed document id (needed for making single API request to get the document details).
