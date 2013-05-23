@@ -133,4 +133,4 @@ Getting a list of receipts filtered by criteria is simple. You can filter by ```
 
 ## License
 
-See [LICENSE] for details.
+See [LICENSE](LICENSE) for details.
