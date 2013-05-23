@@ -1,3 +1,6 @@
+require "shoeboxed/support/to_param"
+require "shoeboxed/support/to_query"
+
 class Shoeboxed
   # Public: Generate an authentication url.
   #
@@ -22,10 +25,7 @@ class Shoeboxed
       # layer of security and ensure the request was initiated by your app.
       "appparams" => nil
     }
-    query_string = Shoeboxed::Support.hash_to_query_string(params)
 
-    "https://api.shoeboxed.com/v1/ws/api.htm?#{query_string}"
+    "https://api.shoeboxed.com/v1/ws/api.htm?#{params.to_query}"
   end
 end
-
-require "shoeboxed/support"
