@@ -28,4 +28,24 @@ class Shoeboxed
 
     "https://api.shoeboxed.com/v1/ws/api.htm?#{params.to_query}"
   end
+
+  # Internal: Called during object instantiation. The args array sent to #new
+  # is passed on to the initialize method.
+  #
+  # options - Hash of options.
+  def initialize(options=nil)
+    options = options || {}
+    @api_user_token = options.fetch(:api_user_token)
+    @sbx_user_token = options.fetch(:sbx_user_token)
+  end
+
+  # Public: Shoeboxed api_user_token needed for making authenticated requests.
+  #
+  # Returns a String.
+  attr_reader :api_user_token
+
+  # Public: Shoeboxed sbx_user_token needed for making authenticated requests.
+  #
+  # Returns a String.
+  attr_reader :sbx_user_token
 end
