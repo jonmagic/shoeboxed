@@ -10,73 +10,26 @@ describe Shoeboxed::Documents do
   subject { Shoeboxed::Documents.new(connection) }
 
   describe "#upload" do
-    let(:response) { double(:response, :code => 200, :has_key? => true) }
-    let(:document) { File.new(fixture_path("receipt", "jpg")) }
-    let(:base_query) { {"apiUserToken" => "foo", "sbxUserToken" => "bar"} }
+    let(:document) { double(:document) }
+    let(:options) { {} }
 
-    context "without options hash" do
-      it "calls connection.upload with query and returns true" do
-        desired_query = base_query.merge({
-          "images"    => document,
-          "imageType" => "receipt"
-        })
+    it "instantiates Shoeboxed::Api::Upload with connection, document, and options" do
+      upload_instance = double(:upload, :submit_request => true)
 
-        subject.connection.
-          should_receive(:upload).
-          with(desired_query).
-          and_return(response)
+      Shoeboxed::Api::Upload.should_receive(:new).
+        with(connection, document, options).
+        and_return(upload_instance)
 
-        expect(subject.upload(document)).to be_true
-      end
+      subject.upload(document, options)
     end
 
-    context "with options hash containing type" do
-      it "calls connection.upload with query and returns true" do
-        desired_query = base_query.merge({
-          "images"     => document,
-          "imageType"  => "business-card"
-        })
+    it "calls submit_request on instance" do
+      upload_instance = double(:upload)
+      upload_instance.should_receive(:submit_request)
 
-        subject.connection.
-          should_receive(:upload).
-          with(desired_query).
-          and_return(response)
+      Shoeboxed::Api::Upload.stub(:new => upload_instance)
 
-        expect(subject.upload(document, {:type => :business_card})).to be_true
-      end
-    end
-
-    context "with options hash containing guid" do
-      it "calls connection.upload with query and returns true" do
-        desired_query = base_query.merge({
-          "images"     => document,
-          "imageType"  => "receipt",
-          "inserterId" => "abcd1234"
-        })
-
-        subject.connection.
-          should_receive(:upload).
-          with(desired_query).
-          and_return(response)
-
-        expect(subject.upload(document, {:guid => "abcd1234"})).to be_true
-      end
-    end
-
-    context "non 200 code" do
-      let(:response) { double(:response, :code => 404) }
-
-      it "returns false" do
-        expect(subject.upload(document)).to be_false
-      end
-    end
-
-    context "not an UploadImagesResponse" do
-      let(:response) { double(:response, :code => 200, :has_key? => false) }
-
-      it "returns false" do
-        expect(subject.upload(document)).to be_false
-      end
+      subject.upload(document, options)
     end
   end
 
@@ -143,13 +96,6 @@ describe Shoeboxed::Documents do
       it "returns nil" do
         expect(subject.status("1234")).to be_nil
       end
-    end
-  end
-
-  describe "Types" do
-    it "returns Shoeboxed types" do
-      expect(described_class::Types[:receipt]).to eq("receipt")
-      expect(described_class::Types[:business_card]).to eq("business-card")
     end
   end
 
