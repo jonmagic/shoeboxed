@@ -1,7 +1,12 @@
+require "forwardable"
 require "shoeboxed/support/to_param"
 require "shoeboxed/support/to_query"
+require "shoeboxed/v1/connection"
+require "shoeboxed/v1/public_api"
 
 class Shoeboxed
+  extend Forwardable
+
   # Public: Generate an authentication url.
   #
   # options - Options hash containing :app_name and :callback_url.
@@ -27,5 +32,32 @@ class Shoeboxed
     }
 
     "https://api.shoeboxed.com/v1/ws/api.htm?#{params.to_query}"
+  end
+
+  # Internal: Called during object instantiation. The args array sent to #new
+  # is passed on to the initialize method.
+  #
+  # options - Hash of options.
+  def initialize(options=nil)
+    options = options || {}
+    @api_user_token = options.fetch(:api_user_token)
+    @sbx_user_token = options.fetch(:sbx_user_token)
+  end
+
+  # Public: See Shoeboxed::V1::PublicApi#upload for documentation.
+  def_delegators :public_api, :upload
+
+  # Internal: Shoeboxed::V1::PublicApi instance to forward api method calls to.
+  #
+  # Returns a Shoeboxed::V1::PublicApi.
+  def public_api
+    @public_api ||= Shoeboxed::V1::PublicApi.new(connection)
+  end
+
+  # Internal: Shoeboxed connection for making requests.
+  #
+  # Returns a Shoeboxed::V1::Connection.
+  def connection
+    @connection ||= Shoeboxed::V1::Connection.new(@api_user_token, @sbx_user_token)
   end
 end
