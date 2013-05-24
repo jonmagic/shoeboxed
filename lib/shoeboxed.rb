@@ -1,3 +1,4 @@
+require "builder"
 require "forwardable"
 require "shoeboxed/support/to_param"
 require "shoeboxed/support/to_query"

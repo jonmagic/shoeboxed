@@ -1,5 +1,3 @@
-require "builder"
-
 class Shoeboxed
   class Documents
     # Public: Upload a document (pdf, png, jpg, or gif) for storage and
