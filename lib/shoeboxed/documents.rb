@@ -1,7 +1,7 @@
 require "builder"
 
 class Shoeboxed
-  class PublicApi
+  class Documents
     # Public: Upload a document (pdf, png, jpg, or gif) for storage and
     # OCR processing. Specify the type (:receipt or :business_card) and
     # optionally specify a guid for referencing the document later.
@@ -21,7 +21,7 @@ class Shoeboxed
 
       # Required parameters.
       query["images"]     = document
-      query["imageType"]  = DocumentTypes[type]
+      query["imageType"]  = Types[type]
 
       # Optional parameters.
       query["inserterId"] = guid        if guid
@@ -41,7 +41,7 @@ class Shoeboxed
 
     # Internal: Map document type symbols to strings the Shoeboxed V1 API
     # understands.
-    DocumentTypes = {
+    Types = {
       :business_card => "business-card",
       :receipt       => "receipt"
     }

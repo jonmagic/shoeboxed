@@ -1,13 +1,13 @@
 require "spec_helper"
 
-describe Shoeboxed::PublicApi do
+describe Shoeboxed::Documents do
   let(:response) { double(:response, :code => 200, :has_key? => true) }
   let(:connection) {
     double(:connection, :upload => response,
                         :api_user_token => "foo",
                         :sbx_user_token => "bar")
   }
-  subject { Shoeboxed::PublicApi.new(connection) }
+  subject { Shoeboxed::Documents.new(connection) }
 
   describe "#upload" do
     let(:document) { File.new(fixture_path("receipt", "jpg")) }
@@ -79,10 +79,10 @@ describe Shoeboxed::PublicApi do
     end
   end
 
-  describe "DocumentTypes" do
+  describe "Types" do
     it "returns Shoeboxed types" do
-      expect(Shoeboxed::PublicApi::DocumentTypes[:receipt]).to eq("receipt")
-      expect(Shoeboxed::PublicApi::DocumentTypes[:business_card]).to eq("business-card")
+      expect(Shoeboxed::Documents::Types[:receipt]).to eq("receipt")
+      expect(Shoeboxed::Documents::Types[:business_card]).to eq("business-card")
     end
   end
 
