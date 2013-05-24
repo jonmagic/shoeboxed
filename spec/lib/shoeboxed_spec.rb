@@ -18,21 +18,28 @@ describe Shoeboxed do
   end
 
   describe "#upload" do
-    it "delegates to public_api" do
-      subject.public_api.should_receive(:upload)
+    it "delegates to documents" do
+      subject.documents.should_receive(:upload)
       subject.upload
     end
   end
 
-  describe "#public_api" do
-    it "returns instance of Shoeboxed::V1::PublicApi" do
-      expect(subject.public_api).to be_instance_of(Shoeboxed::V1::PublicApi)
+  describe "#status" do
+    it "delegates to documents" do
+      subject.documents.should_receive(:status)
+      subject.status
+    end
+  end
+
+  describe "#documents" do
+    it "returns instance of Shoeboxed::Documents" do
+      expect(subject.documents).to be_instance_of(Shoeboxed::Documents)
     end
   end
 
   describe "#connection" do
-    it "returns instance of Shoeboxed::V1::Connection" do
-      expect(subject.connection).to be_instance_of(Shoeboxed::V1::Connection)
+    it "returns instance of Shoeboxed::Connection" do
+      expect(subject.connection).to be_instance_of(Shoeboxed::Connection)
     end
   end
 end
