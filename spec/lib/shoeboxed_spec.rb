@@ -1,13 +1,11 @@
 require "spec_helper"
 
 describe Shoeboxed do
-  let(:shoeboxed) {
-    Shoeboxed.new(:api_user_token => "foo", :sbx_user_token => "bar")
-  }
+  subject { Shoeboxed.new(:api_user_token => "foo", :sbx_user_token => "bar") }
 
   describe ".authentication_url" do
     it "returns url for user to authenticate" do
-      generated_url = Shoeboxed.authentication_url \
+      generated_url = described_class.authentication_url \
         :app_name => "Hoyt Accounting",
         :callback_url => "http://shoeboxed.herokuapp.com"
 
@@ -19,27 +17,22 @@ describe Shoeboxed do
     end
   end
 
-  describe "#api_user_token" do
-    it "returns value sent in options on instantiation." do
-      expect(shoeboxed.api_user_token).to eq("foo")
-    end
-
-    it "raises error if :api_user_token is not present" do
-      expect {
-        Shoeboxed.new(:sbx_user_token => "bar")
-      }.to raise_error(KeyError)
+  describe "#upload" do
+    it "delegates to public_api" do
+      subject.public_api.should_receive(:upload)
+      subject.upload
     end
   end
 
-  describe "#sbx_user_token" do
-    it "returns value sent in options on instantiation." do
-      expect(shoeboxed.sbx_user_token).to eq("bar")
+  describe "#public_api" do
+    it "returns instance of Shoeboxed::V1::PublicApi" do
+      expect(subject.public_api).to be_instance_of(Shoeboxed::V1::PublicApi)
     end
+  end
 
-    it "raises error if :sbx_user_token is not present" do
-      expect {
-        Shoeboxed.new(:api_user_token => "foo")
-      }.to raise_error(KeyError)
+  describe "#connection" do
+    it "returns instance of Shoeboxed::V1::Connection" do
+      expect(subject.connection).to be_instance_of(Shoeboxed::V1::Connection)
     end
   end
 end
