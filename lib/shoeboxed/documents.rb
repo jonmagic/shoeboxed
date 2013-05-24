@@ -11,32 +11,9 @@ class Shoeboxed
     #
     # Returns a TrueClass or FalseClass.
     def upload(document, options=nil)
-      options     = options || {}
-      type        = options.fetch(:type, :receipt)
-      guid        = options.fetch(:guid, nil)
-      note        = options.fetch(:note, nil)
-      category_id = options.fetch(:category_id, nil)
-      export      = options.fetch(:export, nil)
-      query = {}
-
-      # Required parameters.
-      query["images"]     = document
-      query["imageType"]  = Types[type]
-
-      # Optional parameters.
-      query["inserterId"] = guid        if guid
-      query["note"]       = note        if note
-      query["categories"] = category_id if category_id
-      query["exportAfterProcessing"] = export if export
-
-      # Authentication parameters.
-      query["apiUserToken"] = connection.api_user_token
-      query["sbxUserToken"] = connection.sbx_user_token
-
-      response = connection.upload(query)
-      return false unless response.code == 200
-      return false unless response.has_key?("UploadImagesResponse")
-      true
+      options = options || {}
+      api_upload = Api::Upload.new(connection, document, options)
+      api_upload.submit_request
     end
 
     # Public: Look up the status of a document by guid.
@@ -68,13 +45,6 @@ class Shoeboxed
       document_status_hash_with_guid = document_status_hash.merge("guid" => guid)
       Status.new(document_status_hash_with_guid)
     end
-
-    # Internal: Map document type symbols to strings the Shoeboxed V1 API
-    # understands.
-    Types = {
-      :business_card => "business-card",
-      :receipt       => "receipt"
-    }
 
     # Internal: Called during object instantiation. Takes a connection.
     #
