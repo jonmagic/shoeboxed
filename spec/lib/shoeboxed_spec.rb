@@ -25,14 +25,14 @@ describe Shoeboxed do
   end
 
   describe "#public_api" do
-    it "returns instance of Shoeboxed::V1::PublicApi" do
-      expect(subject.public_api).to be_instance_of(Shoeboxed::V1::PublicApi)
+    it "returns instance of Shoeboxed::PublicApi" do
+      expect(subject.public_api).to be_instance_of(Shoeboxed::PublicApi)
     end
   end
 
   describe "#connection" do
-    it "returns instance of Shoeboxed::V1::Connection" do
-      expect(subject.connection).to be_instance_of(Shoeboxed::V1::Connection)
+    it "returns instance of Shoeboxed::Connection" do
+      expect(subject.connection).to be_instance_of(Shoeboxed::Connection)
     end
   end
 end

@@ -1,8 +1,8 @@
 require "forwardable"
 require "shoeboxed/support/to_param"
 require "shoeboxed/support/to_query"
-require "shoeboxed/v1/connection"
-require "shoeboxed/v1/public_api"
+require "shoeboxed/connection"
+require "shoeboxed/public_api"
 
 class Shoeboxed
   extend Forwardable
@@ -44,20 +44,20 @@ class Shoeboxed
     @sbx_user_token = options.fetch(:sbx_user_token)
   end
 
-  # Public: See Shoeboxed::V1::PublicApi#upload for documentation.
+  # Public: See Shoeboxed::PublicApi#upload for documentation.
   def_delegators :public_api, :upload
 
-  # Internal: Shoeboxed::V1::PublicApi instance to forward api method calls to.
+  # Internal: Shoeboxed::PublicApi instance to forward api method calls to.
   #
-  # Returns a Shoeboxed::V1::PublicApi.
+  # Returns a Shoeboxed::PublicApi.
   def public_api
-    @public_api ||= Shoeboxed::V1::PublicApi.new(connection)
+    @public_api ||= Shoeboxed::PublicApi.new(connection)
   end
 
   # Internal: Shoeboxed connection for making requests.
   #
-  # Returns a Shoeboxed::V1::Connection.
+  # Returns a Shoeboxed::Connection.
   def connection
-    @connection ||= Shoeboxed::V1::Connection.new(@api_user_token, @sbx_user_token)
+    @connection ||= Shoeboxed::Connection.new(@api_user_token, @sbx_user_token)
   end
 end
