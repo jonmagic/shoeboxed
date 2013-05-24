@@ -19,41 +19,16 @@ describe Shoeboxed::Connection do
       subject.post({:foo => "bar"})
     end
 
-    context "non 200 response code" do
-      it "raises 'Shoeboxed::InternalServerError'" do
-        described_class.stub(:post => double(:response, :code => 404))
-
-        expect { subject.post({}) }.to raise_error(Shoeboxed::InternalServerError)
-      end
-    end
-
-    context "parsed_response has 'Error'" do
-      let(:parsed_response) {
-        {
-          "Error" => {
-            "code" => "1",
-            "description" => "Bad credentials"
-          }
-        }
-      }
-
-      it "raises 'Shoeboxed::Error'" do
-        expect { subject.post({}) }.to \
-          raise_error(Shoeboxed::Error, "Error code 1: Bad credentials")
-      end
-    end
-
-    context "in a perfect world" do
-      it "returns parsed_response" do
-        expect(subject.post({})).to eq(response)
-      end
+    it "returns parsed_response" do
+      expect(subject.post({})).to eq(response)
     end
   end
 
   describe "#upload" do
     it "calls post on class with UploadPath and query hash" do
       described_class.should_receive(:post).
-        with(described_class::UploadPath, :query => {:foo => "bar"})
+        with(described_class::UploadPath, :query => {:foo => "bar"}).
+        and_return(response)
 
       subject.upload({:foo => "bar"})
     end
@@ -98,6 +73,37 @@ describe Shoeboxed::Connection do
   describe ".default_options[:base_uri]" do
     it "returns 'https://api.shoeboxed.com/v1/ws'" do
       expect(described_class.default_options[:base_uri]).to eq("https://api.shoeboxed.com/v1/ws")
+    end
+  end
+
+  describe "#make_request_and_handle_errors" do
+    context "non 200 response code" do
+      it "raises 'Shoeboxed::InternalServerError'" do
+        response = double(:response, :code => 404)
+
+        expect {
+          subject.make_request_and_handle_errors do
+            double(:response, :code => 404)
+          end
+        }.to raise_error(Shoeboxed::InternalServerError)
+      end
+    end
+
+    context "parsed_response has 'Error'" do
+      it "raises 'Shoeboxed::Error'" do
+        parsed_response = {
+          "Error" => {
+            "code" => "1",
+            "description" => "Bad credentials"
+          }
+        }
+
+        expect {
+          subject.make_request_and_handle_errors do
+            double(:response, :code => 200, :parsed_response => parsed_response)
+          end
+        }.to raise_error(Shoeboxed::Error, "Error code 1: Bad credentials")
+      end
     end
   end
 end
