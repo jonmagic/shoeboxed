@@ -24,6 +24,13 @@ describe Shoeboxed do
     end
   end
 
+  describe "#status" do
+    it "delegates to documents" do
+      subject.documents.should_receive(:status)
+      subject.status
+    end
+  end
+
   describe "#documents" do
     it "returns instance of Shoeboxed::Documents" do
       expect(subject.documents).to be_instance_of(Shoeboxed::Documents)
