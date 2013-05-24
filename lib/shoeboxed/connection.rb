@@ -4,11 +4,22 @@ class Shoeboxed
   class Connection
     include HTTMultiParty
 
-    # Public: Post query to Shoeboxed API endpoint.
+    # Public: Post query to Shoeboxed API endpoint. Handle non 200 response
+    # codes and parsed response hash with 'Error' key.
     #
     # Returns a Response.
     def post(query)
-      self.class.post(ApiPath, :query => query)
+      response = self.class.post(ApiPath, :query => query)
+
+      raise InternalServerError unless response.code == 200
+
+      parsed_response = response.parsed_response
+      if parsed_response.has_key?("Error")
+        error = parsed_response["Error"]
+        raise Error.new("Error code #{error["code"]}: #{error["description"]}")
+      end
+
+      response
     end
 
     # Public: Post query to Shoeboxed upload endpoint.
