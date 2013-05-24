@@ -36,7 +36,8 @@ describe "Uploading a document" do
       stub_request(:post, upload_url).
         to_return(:status => 200, :body => body)
 
-      expect(shoeboxed.upload(document)).to be_false
+      expect { shoeboxed.upload(document) }.to \
+        raise_error(Shoeboxed::Error, "Error code 1: Bad credentials")
     end
   end
 
@@ -47,7 +48,9 @@ describe "Uploading a document" do
       stub_request(:post, upload_url).
         to_return(:status => 200, :body => body)
 
-      expect(shoeboxed.upload(document)).to be_false
+      expect { shoeboxed.upload(document) }.to \
+        raise_error(Shoeboxed::Error,
+                    "Error code 5: An internal error has occurred.")
     end
   end
 
@@ -56,7 +59,8 @@ describe "Uploading a document" do
       stub_request(:post, upload_url).
         to_return(:status => 404)
 
-      expect(shoeboxed.upload(document)).to be_false
+      expect { shoeboxed.upload(document) }.to \
+        raise_error(Shoeboxed::InternalServerError)
     end
   end
 end
