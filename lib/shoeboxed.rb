@@ -4,6 +4,7 @@ require "shoeboxed/support/to_query"
 require "shoeboxed/connection"
 require "shoeboxed/documents"
 require "shoeboxed/status"
+require "shoeboxed/api/upload"
 
 class Shoeboxed
   extend Forwardable
