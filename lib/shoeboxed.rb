@@ -5,6 +5,7 @@ require "shoeboxed/connection"
 require "shoeboxed/documents"
 require "shoeboxed/status"
 require "shoeboxed/api/upload"
+require "shoeboxed/api/status"
 
 class Shoeboxed
   extend Forwardable
@@ -65,4 +66,13 @@ class Shoeboxed
   def connection
     @connection ||= Shoeboxed::Connection.new(@api_user_token, @sbx_user_token)
   end
+
+  # Raised on non 200 response codes.
+  class InternalServerError < Exception; end
+
+  # Raised when parsed response hash has 'Error' key.
+  class Error < Exception; end
+
+  # Raised when request key is not present in parsed response hash.
+  class UnrecognizedResponse < Exception; end
 end

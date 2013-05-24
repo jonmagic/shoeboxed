@@ -1,14 +1,52 @@
 require "spec_helper"
 
 describe Shoeboxed::Connection do
+  let(:parsed_response) { {} }
+  let(:response) {
+    double(:response, :code => 200, :parsed_response => parsed_response)
+  }
   subject { Shoeboxed::Connection.new("foo", "bar") }
 
   describe "#post" do
+    before do
+      described_class.stub(:post => response)
+    end
+
     it "calls post on class with ApiPath and query hash" do
       described_class.should_receive(:post).
         with(described_class::ApiPath, :query => {:foo => "bar"})
 
       subject.post({:foo => "bar"})
+    end
+
+    context "non 200 response code" do
+      it "raises 'Shoeboxed::InternalServerError'" do
+        described_class.stub(:post => double(:response, :code => 404))
+
+        expect { subject.post({}) }.to raise_error(Shoeboxed::InternalServerError)
+      end
+    end
+
+    context "parsed_response has 'Error'" do
+      let(:parsed_response) {
+        {
+          "Error" => {
+            "code" => "1",
+            "description" => "Bad credentials"
+          }
+        }
+      }
+
+      it "raises 'Shoeboxed::Error'" do
+        expect { subject.post({}) }.to \
+          raise_error(Shoeboxed::Error, "Error code 1: Bad credentials")
+      end
+    end
+
+    context "in a perfect world" do
+      it "returns parsed_response" do
+        expect(subject.post({})).to eq(response)
+      end
     end
   end
 

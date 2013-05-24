@@ -34,68 +34,41 @@ describe Shoeboxed::Documents do
   end
 
   describe "#status" do
-    let(:attributes) {
-      {
-        "GetDocumentStatusCallResponse" => {
-          "DocumentId"  => "1806912375",
-          "DocumentType"=> "Receipt",
-          "Status"      => "DONE",
-          "guid"        => "abcd1234"
-        }
-      }
-    }
-    let(:response) {
-      double(:response, :code => 200, :parsed_response => attributes)
-    }
+    let(:guid) { double(:guid) }
+    let(:response_hash_with_guid) { double(:response_hash_with_guid) }
 
     before do
-      subject.connection.stub(:post => response)
+      Shoeboxed::Status.stub(:new)
     end
 
-    it "calls post on connection with query" do
-      subject.connection.should_receive(:post).
-        with({:xml=>"<?xml version=\"1.0\" encoding=\"UTF-8\"?><Request xmlns=\"urn:sbx:apis:SbxBaseComponents\"><RequesterCredentials><ApiUserToken>foo</ApiUserToken><SbxUserToken>bar</SbxUserToken></RequesterCredentials><GetDocumentStatusCall><InserterId>abcd1234</InserterId></GetDocumentStatusCall></Request>"}).
-        and_return(response)
+    it "instantiates Shoeboxed::Api::Status with connection and guid" do
+      status_instance = double(:status,
+                               :submit_request => true,
+                               :response_hash_with_guid => response_hash_with_guid)
 
-      subject.status("abcd1234")
+      Shoeboxed::Api::Status.should_receive(:new).
+        with(connection, guid).
+        and_return(status_instance)
+
+      subject.status(guid)
     end
 
-    context "responds 200" do
-      it "calls new on Status with document_status_hash_with_guid" do
-        Shoeboxed::Status.should_receive(:new).
-          with({"DocumentId"=>"1806912375", "DocumentType"=>"Receipt", "Status"=>"DONE", "guid"=>"abcd1234"})
+    it "calls submit_request on instance" do
+      status_instance = double(:status, :response_hash_with_guid => response_hash_with_guid)
+      status_instance.should_receive(:submit_request)
 
-        subject.status("abcd1234")
-      end
+      Shoeboxed::Api::Status.stub(:new => status_instance)
+
+      subject.status(guid)
     end
 
-    context "responds 404" do
-      let(:response) { double(:response, :code => 404) }
+    it "creates new Shoeboxed::Status with response_hash_with_guid" do
+      status_instance = double(:status, :submit_request => response_hash_with_guid)
+      Shoeboxed::Status.should_receive(:new).with(response_hash_with_guid)
 
-      it "returns nil" do
-        expect(subject.status("1234")).to be_nil
-      end
-    end
+      Shoeboxed::Api::Status.stub(:new => status_instance)
 
-    context "has_key GetDocumentStatusCallResponse" do
-      it "returns Status instance" do
-        expect(subject.status("abcd1234")).to be_instance_of(Shoeboxed::Status)
-      end
-    end
-
-    context "has_key Error" do
-      let(:attributes) {
-        {
-          "Error" => {
-            "code"  => "1",
-            "description" => "oh noes!"
-          }
-        }
-      }
-
-      it "returns nil" do
-        expect(subject.status("1234")).to be_nil
-      end
+      subject.status(guid)
     end
   end
 

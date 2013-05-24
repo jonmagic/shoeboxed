@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Request xmlns="urn:sbx:apis:SbxBaseComponents">
+  <RequesterCredentials>
+    <ApiUserToken>foo</ApiUserToken>
+    <SbxUserToken>bar</SbxUserToken>
+  </RequesterCredentials>
+  <GetDocumentStatusCall>
+    <InserterId>abcd1234</InserterId>
+  </GetDocumentStatusCall>
+</Request>
