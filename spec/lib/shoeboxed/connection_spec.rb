@@ -1,7 +1,7 @@
 require "spec_helper"
 
-describe Shoeboxed::V1::Connection do
-  subject { Shoeboxed::V1::Connection.new("foo", "bar") }
+describe Shoeboxed::Connection do
+  subject { Shoeboxed::Connection.new("foo", "bar") }
 
   describe "#post" do
     it "calls post on class with ApiPath and query hash" do
