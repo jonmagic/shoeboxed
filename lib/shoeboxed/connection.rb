@@ -9,24 +9,18 @@ class Shoeboxed
     #
     # Returns a Response.
     def post(query)
-      response = self.class.post(ApiPath, :query => query)
-
-      raise InternalServerError unless response.code == 200
-
-      parsed_response = response.parsed_response
-      if parsed_response.has_key?("Error")
-        error = parsed_response["Error"]
-        raise Error.new("Error code #{error["code"]}: #{error["description"]}")
+      make_request_and_handle_errors do
+        self.class.post(ApiPath, :query => query)
       end
-
-      response
     end
 
     # Public: Post query to Shoeboxed upload endpoint.
     #
     # Returns a Response.
     def upload(query)
-      self.class.post(UploadPath, :query => query)
+      make_request_and_handle_errors do
+        self.class.post(UploadPath, :query => query)
+      end
     end
 
     # Public: Shoeboxed api_user_token for authenticated requests.
@@ -47,7 +41,7 @@ class Shoeboxed
     # Parse response body as xml.
     format :xml
 
-    # Public: Root API url.
+    # Internal: Root API url.
     ShoeboxedV1ApiUrl = "https://api.shoeboxed.com/v1/ws"
 
     # Internal: V1 API path.
@@ -58,5 +52,19 @@ class Shoeboxed
 
     # Set Shoeboxed::Connection.default_options[:base_uri].
     base_uri ShoeboxedV1ApiUrl
+
+    def make_request_and_handle_errors(&block)
+      response = block.call
+
+      raise InternalServerError unless response.code == 200
+
+      parsed_response = response.parsed_response
+      if parsed_response.has_key?("Error")
+        error = parsed_response["Error"]
+        raise Error.new("Error code #{error["code"]}: #{error["description"]}")
+      end
+
+      response
+    end
   end
 end
