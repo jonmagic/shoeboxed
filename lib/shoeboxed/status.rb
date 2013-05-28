@@ -40,6 +40,13 @@ class Shoeboxed
       DocumentTypes[@document_type]
     end
 
+    # Public: Returns the document type class.
+    #
+    # Returns class Receipt, BusinessCard, or OtherDocument.
+    def document_type_class
+      Shoeboxed.const_get(@document_type)
+    end
+
     # Internal: Called during object instantiation.
     #
     # attributes - Hash of attributes returned from API request.
