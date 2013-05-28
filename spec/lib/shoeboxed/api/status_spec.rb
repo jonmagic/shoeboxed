@@ -38,26 +38,6 @@ describe Shoeboxed::Api::Status do
     end
   end
 
-  describe "#response" do
-    it "calls post on connection with query" do
-      query = double(:query)
-      subject.stub(:query => query)
-
-      subject.connection.should_receive(:post).with(query)
-
-      subject.response
-    end
-  end
-
-  describe "#query" do
-    it "returns {:xml => xml}" do
-      xml = double(:xml)
-      subject.stub(:xml => xml)
-
-      expect(subject.query).to eq({:xml => xml})
-    end
-  end
-
   describe "#xml" do
     it "returns valid xml" do
       fixture = File.read(fixture_path("GetDocumentStatusCallRequest"))
@@ -73,7 +53,7 @@ describe Shoeboxed::Api::Status do
   end
 
   describe "#guid" do
-    it "returns connection passed in at instantiation" do
+    it "returns guid passed in at instantiation" do
       expect(subject.guid).to eq(guid)
     end
   end

@@ -1,7 +1,6 @@
 class Shoeboxed
   module Api
-    class Status
-
+    class Status < XmlRequest
       # Public: Submits request and returns response hash with 'guid' merged in.
       #
       # Returns a Hash.
@@ -12,27 +11,6 @@ class Shoeboxed
 
         document_status_hash = parsed_response["GetDocumentStatusCallResponse"]
         document_status_hash.merge("guid" => guid)
-      end
-
-      # Public: Parsed response.
-      #
-      # Returns a Hash.
-      def parsed_response
-        response.parsed_response
-      end
-
-      # Public: Response from post request with query.
-      #
-      # Returns a HTTParty::Response.
-      def response
-        @response ||= connection.post(query)
-      end
-
-      # Internal: Query hash for request.
-      #
-      # Returns a Hash.
-      def query
-        {:xml => xml}
       end
 
       # Internal: Generated xml for request.
