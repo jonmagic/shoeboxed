@@ -67,7 +67,7 @@ describe Shoeboxed::Status do
     end
   end
 
-  describe "#document_type_class" do
+  describe "#document_type_class_name" do
     context "Receipt" do
       let(:attributes) {
         {
@@ -79,7 +79,7 @@ describe Shoeboxed::Status do
       }
 
       it "returns Receipt" do
-        expect(subject.document_type_class).to eq(Shoeboxed::Receipt)
+        expect(subject.document_type_class_name).to eq("Receipt")
       end
     end
 
@@ -94,7 +94,7 @@ describe Shoeboxed::Status do
       }
 
       it "returns BusinessCard" do
-        expect(subject.document_type_class).to eq(Shoeboxed::BusinessCard)
+        expect(subject.document_type_class_name).to eq("BusinessCard")
       end
     end
 
@@ -109,7 +109,7 @@ describe Shoeboxed::Status do
       }
 
       it "returns OtherDocument" do
-        expect(subject.document_type_class).to eq(Shoeboxed::OtherDocument)
+        expect(subject.document_type_class_name).to eq("OtherDocument")
       end
     end
   end
