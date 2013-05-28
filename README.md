@@ -88,14 +88,14 @@ Get document status by guid. If you passed a unique id (guid) to the upload meth
 
 You can find a receipt by the unique id (guid) passed in during upload or by it's Shoeboxed id.
 
-#### receipts.find_by_guid
+#### find_by_guid
 
-This method of finding a receipt requires two requests, the first to get the status of the receipt and the second to retrieve the receipt by it's Shoeboxed id.
+This method of finding a receipt requires two requests, the first to get the status and Shoeboxed id of the receipt and the second to retrieve the receipt by it's Shoeboxed id.
 
-If the receipt has not finished processing ```receipts.find_by_guid``` will return ```nil```:
+If the receipt has not finished processing ```find_by_guid``` will return ```nil```:
 
 ```ruby
-> shoeboxed.receipts.find_by_guid("033c9fa8-c335-11e2-9172-dc397603307a")
+> shoeboxed.find_by_guid("033c9fa8-c335-11e2-9172-dc397603307a")
 => nil
 ```
 
@@ -106,37 +106,22 @@ Once it has finished processing it will return a ```Shoeboxed::Receipt``` instan
 => #<Shoeboxed::Receipt...>
 ```
 
-#### receipts.find_by_id
+#### find_by_type_and_id
 
-Finding the receipt by it's Shoeboxed id only requires one request.
+Finding the receipt by it's type and Shoeboxed id only requires one request.
 
 If the receipt is found it will return a ```Shoeboxed::Receipt``` instance:
 
 ```ruby
-> shoeboxed.receipts.find_by_id(1234)
+> shoeboxed.receipts.find_by_type_and_id("Receipt", "abcd1234")
 => #<Shoeboxed::Receipt...>
 ```
 
 If the receipt is not found an error is raised:
 
 ```ruby
-> shoeboxed.receipts.find_by_id(4321)
-Shoeboxed::Document::NotFound: document with id '4321' not found
-```
-
-#### receipts.all
-
-Getting a list of receipts filtered by criteria is simple. You can filter by ```category_id``` and ```modified_since``` as well as ```limit``` the number of results per page and select which ```page``` you want to retrieve.
-
-```limit``` defaults to 100 and not setting ```page``` will return all receipts from all pages.
-
-```ruby
-> shoeboxed.receipts.all \
-    :category_id => 234567,
-    :limit => 50,
-    :modified_since => 1.day.ago,
-    :page => 2
-=> [#<Shoeboxed::Receipt...>, #<Shoeboxed::Receipt...>, ...]
+> shoeboxed.receipts.find_by_type_and_id("Receipt", "4321dcba")
+Shoeboxed::Error: Error code 5: An internal error has occurred.
 ```
 
 ## License

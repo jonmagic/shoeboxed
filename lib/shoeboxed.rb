@@ -4,8 +4,10 @@ require "shoeboxed/support/to_param"
 require "shoeboxed/support/to_query"
 require "shoeboxed/connection"
 require "shoeboxed/documents"
+require "shoeboxed/receipt"
 require "shoeboxed/status"
 require "shoeboxed/api/xml_request"
+require "shoeboxed/api/document"
 require "shoeboxed/api/status"
 require "shoeboxed/api/upload"
 
@@ -54,6 +56,12 @@ class Shoeboxed
 
   # Public: See Shoeboxed::Documents#status for documentation.
   def_delegators :documents, :status
+
+  # Public: See Shoeboxed::Documents#find_by_guid for documentation.
+  def_delegators :documents, :find_by_guid
+
+  # Public: See Shoeboxed::Documents#find_by_type_and_id for documentation.
+  def_delegators :documents, :find_by_type_and_id
 
   # Internal: Shoeboxed::Document instance to forward api method calls to.
   #
