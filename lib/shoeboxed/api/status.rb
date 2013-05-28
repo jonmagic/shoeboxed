@@ -18,19 +18,13 @@ class Shoeboxed
       # Returns a String.
       def xml
         @xml ||= begin
-          builder = ::Builder::XmlMarkup.new(:indent => 2)
-          builder.instruct!(:xml, :version=>"1.0", :encoding=>"UTF-8")
-          builder.Request(:xmlns => "urn:sbx:apis:SbxBaseComponents") do
-            builder.RequesterCredentials do
-              builder.ApiUserToken(connection.api_user_token)
-              builder.SbxUserToken(connection.sbx_user_token)
-            end
+          builder = ::Builder::XmlMarkup.new(:indent => 4)
+
+          authed_xml_as_string(builder) do
             builder.GetDocumentStatusCall do
               builder.InserterId(guid)
             end
           end
-
-          builder.target!
         end
       end
 
