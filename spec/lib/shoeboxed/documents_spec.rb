@@ -72,6 +72,69 @@ describe Shoeboxed::Documents do
     end
   end
 
+  describe "#find_by_guid" do
+    let(:status) {
+      double(:status, :document_type_class_name => "Receipt", :document_id => "abcd1234")
+    }
+    before do
+      subject.stub(:status => status)
+      subject.stub(:find_by_type_and_id => nil)
+    end
+
+    it "calls status with guid" do
+      subject.should_receive(:status).with("abcd1234")
+      subject.find_by_guid("abcd1234")
+    end
+
+    it "calls find_by_type_and_id with guid" do
+      subject.should_receive(:find_by_type_and_id).
+        with(status.document_type_class_name, status.document_id)
+      subject.find_by_guid("abcd1234")
+    end
+
+    context "document not finished processing" do
+      let(:status) {
+        double(:status, :document_type_class_name => nil, :document_id => nil)
+      }
+
+      it "returns nil" do
+        expect(subject.find_by_guid("abcd1234")).to be_nil
+      end
+    end
+  end
+
+  describe "#find_by_type_and_id" do
+    let(:attributes) { double(:attributes) }
+    let(:document) { double(:document, :submit_request => attributes) }
+
+    before do
+      Shoeboxed::Api::Document.stub(:new => document)
+    end
+
+    it "gets constant from document type class name" do
+      Shoeboxed.should_receive(:const_get).
+        with("Receipt").
+        and_return(Shoeboxed::Receipt)
+      subject.find_by_type_and_id("Receipt", "abcd1234")
+    end
+
+    it "creates new instance of Api::Document with connection, type, and id" do
+      Shoeboxed::Api::Document.should_receive(:new).
+        with(connection, "Receipt", "abcd1234")
+      subject.find_by_type_and_id("Receipt", "abcd1234")
+    end
+
+    it "calls submit_reqeuest on the document" do
+      document.should_receive(:submit_request)
+      subject.find_by_type_and_id("Receipt", "abcd1234")
+    end
+
+    it "calls new on constant with attributes" do
+      Shoeboxed::Receipt.should_receive(:new).with(attributes)
+      subject.find_by_type_and_id("Receipt", "abcd1234")
+    end
+  end
+
   describe "#connection" do
     it "returns connection passed in during instantiation" do
       expect(subject.connection).to eq(connection)

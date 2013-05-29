@@ -1,16 +1,15 @@
 class Shoeboxed
   module Api
-    class Status < XmlRequest
-      # Public: Submits request and returns response hash with 'guid' merged in.
+    class Document < XmlRequest
+      # Public: Make document info request and return self.
       #
       # Returns a Hash.
       def submit_request
-        unless parsed_response.has_key?("GetDocumentStatusCallResponse")
+        unless parsed_response.has_key?("Get#{document_type}InfoCallResponse")
           raise UnrecognizedResponse.new("Unrecognized response: #{parsed_response.inspect}")
         end
 
-        document_status_hash = parsed_response["GetDocumentStatusCallResponse"]
-        document_status_hash.merge("guid" => guid)
+        parsed_response["Get#{document_type}InfoCallResponse"][document_type]
       end
 
       # Internal: Generated xml for request.
@@ -21,8 +20,10 @@ class Shoeboxed
           builder = ::Builder::XmlMarkup.new(:indent => 4)
 
           authed_xml_as_string(builder) do
-            builder.GetDocumentStatusCall do
-              builder.InserterId(guid)
+            builder.GetReceiptInfoCall do
+              builder.ReceiptFilter do
+                builder.ReceiptId(id)
+              end
             end
           end
         end
@@ -31,10 +32,12 @@ class Shoeboxed
       # Internal: Called during object instantiation.
       #
       # connection - Shoeboxed::Connection instance.
-      # guid       - String guid of document.
-      def initialize(connection, guid)
+      # id         - String id of document.
+      # document_type - Camel cased document type class name as String.
+      def initialize(connection, document_type, id)
         @connection = connection
-        @guid = guid
+        @document_type = document_type
+        @id = id
       end
 
       # Internal: Shoeboxed::Connection for making requests.
@@ -42,11 +45,15 @@ class Shoeboxed
       # Returns a Shoeboxed::Connection.
       attr_reader :connection
 
-      # Internal: String guid passed to Shoeboxed on upload to use for
-      # referencing the document later.
+      # Internal: String id assigned by Shoeboxed.
       #
       # Returns a String.
-      attr_reader :guid
+      attr_reader :id
+
+      # Internal: Camel cased document type class name as a String.
+      #
+      # Returns a String.
+      attr_reader :document_type
     end
   end
 end

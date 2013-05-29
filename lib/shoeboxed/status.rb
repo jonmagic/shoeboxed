@@ -40,6 +40,13 @@ class Shoeboxed
       DocumentTypes[@document_type]
     end
 
+    # Public: Returns the document type class as a camel case String.
+    #
+    # Returns a String.
+    def document_type_class_name
+      @document_type
+    end
+
     # Internal: Called during object instantiation.
     #
     # attributes - Hash of attributes returned from API request.
