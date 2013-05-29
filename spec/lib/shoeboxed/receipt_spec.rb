@@ -72,6 +72,12 @@ describe Shoeboxed::Receipt do
     end
   end
 
+  describe "#sell_date" do
+    it "returns attributes['selldate']" do
+      expect(subject.sell_date).to eq(attributes["selldate"])
+    end
+  end
+
   describe "#store" do
     it "returns attributes['store']" do
       expect(subject.store).to eq(attributes["store"])

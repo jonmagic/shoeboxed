@@ -29,7 +29,7 @@ class Shoeboxed
       attributes["convertedTotal"]
     end
 
-    # Public: Date on the receipt.
+    # Public: Date the receipt was uploaded to Shoeboxed.
     #
     # Returns a String.
     def date
@@ -73,9 +73,16 @@ class Shoeboxed
 
     # Public: The payment type, Example: "Credit/Debit Card"
     #
-    # Returns a String
+    # Returns a String.
     def payment_type
       attributes["PaymentType"]["type"]
+    end
+
+    # Public: Date of sale on the receipt.
+    #
+    # Returns a String.
+    def sell_date
+      attributes["selldate"]
     end
 
     # Public: Store (or vendor) on the receipt.
