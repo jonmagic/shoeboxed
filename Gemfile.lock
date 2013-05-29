@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    shoeboxed (0.0.2)
+    shoeboxed (0.0.3)
       builder
       httmultiparty
 
