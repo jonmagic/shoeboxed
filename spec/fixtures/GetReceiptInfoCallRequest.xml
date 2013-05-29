@@ -4,7 +4,9 @@
         <ApiUserToken>foo</ApiUserToken>
         <SbxUserToken>bar</SbxUserToken>
     </RequesterCredentials>
-    <GetDocumentStatusCall>
-        <InserterId>abcd1234</InserterId>
-    </GetDocumentStatusCall>
+    <GetReceiptInfoCall>
+        <ReceiptFilter>
+            <ReceiptId>abcd1234</ReceiptId>
+        </ReceiptFilter>
+    </GetReceiptInfoCall>
 </Request>

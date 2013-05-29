@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetReceiptInfoCallResponse>
+    <Receipt store="No Name" note="" id="1806894015" total="$281.44" date="05/22/2013" createdDate="05/22/2013" modifiedDate="05/22/2013" selldate="12/31/2005" imgurl="https://app.shoeboxed.com/api/document/jpg/receipt/1806894015/7ebf27002c781419cebcbacbb9e87fdc/1" envelopeCode="" documentCurrency="USD" accountCurrency="USD" conversionRate="1.0" documentTotal="281.44" convertedTotal="281.44" formattedDocumentTotal="$281.44" formattedConvertedTotal="$281.44" documentTax="" convertedTax="" formattedDocumentTax="" formattedConvertedTax="">
+        <Images>
+            <Image imgurl="https://app.shoeboxed.com/api/document/jpg/receipt/1806894015/7ebf27002c781419cebcbacbb9e87fdc/1" index="1" />
+        </Images>
+        <Categories>
+            <Category name="Meals / Entertainment" id="239763462" />
+        </Categories>
+        <PaymentType type="Credit/Debit Card" lastFourDigits="1234" issuer="other" />
+    </Receipt>
+</GetReceiptInfoCallResponse>

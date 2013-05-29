@@ -1,5 +1,3 @@
-require "builder"
-
 class Shoeboxed
   class Documents
     # Public: Upload a document (pdf, png, jpg, or gif) for storage and
@@ -25,6 +23,31 @@ class Shoeboxed
       api_status = Api::Status.new(connection, guid)
       response_hash_with_guid = api_status.submit_request
       Status.new(response_hash_with_guid)
+    end
+
+    # Public: Find document by guid.
+    #
+    # guid - The guid sent as inserterId when the document was uploaded.
+    #
+    # Returns a BusinessCard, OtherDocument, or Receipt.
+    def find_by_guid(guid)
+      status = status(guid)
+      return unless status.document_type_class_name && status.document_id
+      find_by_type_and_id(status.document_type_class_name, status.document_id)
+    end
+
+    # Public: Find document by Shoeboxed id.
+    #
+    # type - Document type as a String. Possible values are BusinessCard,
+    #        OtherDocument, or Receipt.
+    # id   - Shoeboxed id as a String.
+    #
+    # Returns a BusinessCard, OtherDocument, or Receipt.
+    def find_by_type_and_id(type, id)
+      constant = Shoeboxed.const_get(type)
+      document = Api::Document.new(connection, type, id)
+      attributes = document.submit_request
+      constant.new(attributes)
     end
 
     # Internal: Called during object instantiation. Takes a connection.

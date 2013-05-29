@@ -1,14 +1,15 @@
 require "spec_helper"
 
-describe Shoeboxed::Api::Status do
+describe Shoeboxed::Api::Document do
   let(:response) { double(:response) }
   let(:connection) {
     double(:connection, :api_user_token => "foo",
                         :sbx_user_token => "bar",
                         :response => response)
   }
-  let(:guid) { "abcd1234" }
-  subject { described_class.new(connection, guid) }
+  let(:id) { "abcd1234" }
+  let(:document_type) { "Receipt" }
+  subject { described_class.new(connection, document_type, id) }
 
   describe "#submit_request" do
     let(:parsed_response) { {} }
@@ -20,7 +21,7 @@ describe Shoeboxed::Api::Status do
       subject.stub(:response => response)
     end
 
-    context "missing 'GetDocumentStatusCallResponse'" do
+    context "missing 'GetReceiptInfoCallResponse'" do
       let(:parsed_response) { {:foo => "bar"} }
 
       it "raises 'UnrecognizedResponse' with message" do
@@ -30,17 +31,17 @@ describe Shoeboxed::Api::Status do
     end
 
     context "in a perfect world" do
-      let(:parsed_response) { {"GetDocumentStatusCallResponse" => {}} }
+      let(:parsed_response) { {"GetReceiptInfoCallResponse" => {"Receipt" => {}}} }
 
       it "returns status hash with guid" do
-        expect(subject.submit_request).to eq({"guid" => "abcd1234"})
+        expect(subject.submit_request).to eq({})
       end
     end
   end
 
   describe "#xml" do
     it "returns valid xml" do
-      fixture = File.read(fixture_path("GetDocumentStatusCallRequest"))
+      fixture = File.read(fixture_path("GetReceiptInfoCallRequest"))
 
       expect(subject.xml).to eq(fixture)
     end
@@ -52,9 +53,15 @@ describe Shoeboxed::Api::Status do
     end
   end
 
-  describe "#guid" do
-    it "returns guid passed in at instantiation" do
-      expect(subject.guid).to eq(guid)
+  describe "#id" do
+    it "returns id passed in at instantiation" do
+      expect(subject.id).to eq(id)
+    end
+  end
+
+  describe "#document_type" do
+    it "returns document_type passed in at instantiation" do
+      expect(subject.document_type).to eq(document_type)
     end
   end
 end

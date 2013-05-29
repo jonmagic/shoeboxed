@@ -67,6 +67,53 @@ describe Shoeboxed::Status do
     end
   end
 
+  describe "#document_type_class_name" do
+    context "Receipt" do
+      let(:attributes) {
+        {
+          "DocumentId"  => "1806912375",
+          "DocumentType"=> "Receipt",
+          "Status"      => "DONE",
+          "guid"        => "abcd1234"
+        }
+      }
+
+      it "returns Receipt" do
+        expect(subject.document_type_class_name).to eq("Receipt")
+      end
+    end
+
+    context "BusinessCard" do
+      let(:attributes) {
+        {
+          "DocumentId"  => "1806912375",
+          "DocumentType"=> "BusinessCard",
+          "Status"      => "DONE",
+          "guid"        => "abcd1234"
+        }
+      }
+
+      it "returns BusinessCard" do
+        expect(subject.document_type_class_name).to eq("BusinessCard")
+      end
+    end
+
+    context "OtherDocument" do
+      let(:attributes) {
+        {
+          "DocumentId"  => "1806912375",
+          "DocumentType"=> "OtherDocument",
+          "Status"      => "DONE",
+          "guid"        => "abcd1234"
+        }
+      }
+
+      it "returns OtherDocument" do
+        expect(subject.document_type_class_name).to eq("OtherDocument")
+      end
+    end
+  end
+
   describe "States" do
     it "returns translated types" do
       expect(described_class::States["PROCESSING"]).to eq(:processing)
