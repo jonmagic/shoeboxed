@@ -57,6 +57,27 @@ class Shoeboxed
       attributes["id"]
     end
 
+    # Public: Card issuer, Visa, Mastercard, etc.
+    #
+    # Returns a String.
+    def issuer
+      attributes["PaymentType"]["issuer"]
+    end
+
+    # Public: Last four digits of the card.
+    #
+    # Returns a String.
+    def last_four_digits
+      attributes["PaymentType"]["lastFourDigits"]
+    end
+
+    # Public: The payment type, Example: "Credit/Debit Card"
+    #
+    # Returns a String
+    def payment_type
+      attributes["PaymentType"]["type"]
+    end
+
     # Public: Store (or vendor) on the receipt.
     #
     # Returns a String.

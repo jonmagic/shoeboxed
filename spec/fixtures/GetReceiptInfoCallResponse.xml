@@ -1,9 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <GetReceiptInfoCallResponse>
-    <Receipt store="Morgan Imports" id="139595947" total="$1,929.00" documentCurrency="USD" accountCurrency="USD" conversionRate="1" documentTotal="1929.00" convertedTotal="1929.00" formattedDocumentTotal="$1,929.00" formattedConvertedTotal="$1,929.00" documentTax="" convertedTax="" formattedDocumentTax="" formattedConvertedTax="" date="7/12/2008" modifiedDate="7/12/2008" createdDate="7/10/2008" selldate="5/12/2008" imgurl="http://www.shoeboxed.com/receipt.jpeg?rid=139595947&amp;code=1b106d61cbfa5078f53050e2f3bc315f">
+    <Receipt store="No Name" note="" id="1806894015" total="$281.44" date="05/22/2013" createdDate="05/22/2013" modifiedDate="05/22/2013" selldate="12/31/2005" imgurl="https://app.shoeboxed.com/api/document/jpg/receipt/1806894015/7ebf27002c781419cebcbacbb9e87fdc/1" envelopeCode="" documentCurrency="USD" accountCurrency="USD" conversionRate="1.0" documentTotal="281.44" convertedTotal="281.44" formattedDocumentTotal="$281.44" formattedConvertedTotal="$281.44" documentTax="" convertedTax="" formattedDocumentTax="" formattedConvertedTax="">
+        <Images>
+            <Image imgurl="https://app.shoeboxed.com/api/document/jpg/receipt/1806894015/7ebf27002c781419cebcbacbb9e87fdc/1" index="1" />
+        </Images>
         <Categories>
-            <Category name="Meals / Entertainment" id="23423342"/>
-            <Category name="General Retail" id="9121023"/>
-            <Category name="Fuel" id="18222392"/>
+            <Category name="Meals / Entertainment" id="239763462" />
         </Categories>
+        <PaymentType type="Credit/Debit Card" lastFourDigits="1234" issuer="other" />
     </Receipt>
 </GetReceiptInfoCallResponse>

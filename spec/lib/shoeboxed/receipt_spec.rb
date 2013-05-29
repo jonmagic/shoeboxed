@@ -53,6 +53,25 @@ describe Shoeboxed::Receipt do
     end
   end
 
+  describe "#issuer" do
+    it "returns attributes['PaymentType']['issuer']" do
+      expect(subject.issuer).to eq(attributes["PaymentType"]["issuer"])
+    end
+  end
+
+  describe "#last_four_digits" do
+    it "returns attributes['PaymentType']['lastFourDigits']" do
+      expect(subject.last_four_digits).to \
+        eq(attributes["PaymentType"]["lastFourDigits"])
+    end
+  end
+
+  describe "#payment_type" do
+    it "returns attributes['PaymentType']['type']" do
+      expect(subject.payment_type).to eq(attributes["PaymentType"]["type"])
+    end
+  end
+
   describe "#store" do
     it "returns attributes['store']" do
       expect(subject.store).to eq(attributes["store"])

@@ -19,8 +19,8 @@ describe "find Receipt by guid" do
 
     it "returns Shoeboxed::Receipt" do
       expect(subject).to be_instance_of(Shoeboxed::Receipt)
-      expect(subject.converted_total).to eq("1929.00")
-      expect(subject.date).to eq("7/12/2008")
+      expect(subject.converted_total).to eq("281.44")
+      expect(subject.date).to eq("05/22/2013")
     end
   end
 end
