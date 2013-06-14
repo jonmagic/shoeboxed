@@ -11,7 +11,7 @@ class Shoeboxed
     #
     # Returns a String.
     def categories
-      attributes["Categories"]["Category"]
+      attributes.fetch("Categories", {})["Category"]
     end
 
     # Public: Conversion rate from document currency to account currency.
@@ -68,14 +68,14 @@ class Shoeboxed
     #
     # Returns a String.
     def last_four_digits
-      attributes["PaymentType"]["lastFourDigits"]
+      attributes.fetch("PaymentType", {})["lastFourDigits"]
     end
 
     # Public: The payment type, Example: "Credit/Debit Card"
     #
     # Returns a String.
     def payment_type
-      attributes["PaymentType"]["type"]
+      attributes.fetch("PaymentType", {})["type"]
     end
 
     # Public: Date of sale on the receipt.
