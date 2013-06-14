@@ -62,6 +62,11 @@ describe Shoeboxed::Receipt do
     it "returns attributes['PaymentType']['issuer']" do
       expect(subject.issuer).to eq(attributes["PaymentType"]["issuer"])
     end
+
+    it "returns nil if 'PaymentType' is missing" do
+      subject.attributes.delete("PaymentType")
+      expect(subject.issuer).to be_nil
+    end
   end
 
   describe "#last_four_digits" do

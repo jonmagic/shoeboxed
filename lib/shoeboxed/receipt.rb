@@ -61,7 +61,7 @@ class Shoeboxed
     #
     # Returns a String.
     def issuer
-      attributes["PaymentType"]["issuer"]
+      attributes.fetch("PaymentType", {})["issuer"]
     end
 
     # Public: Last four digits of the card.
