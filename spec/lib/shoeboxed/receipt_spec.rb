@@ -20,6 +20,11 @@ describe Shoeboxed::Receipt do
       subject.attributes.delete("Categories")
       expect(subject.categories).to be_nil
     end
+
+    it "returns nil if 'Categories' is nil" do
+      subject.attributes["Categories"] = nil
+      expect(subject.categories).to be_nil
+    end
   end
 
   describe "#conversion_rate" do
@@ -67,6 +72,11 @@ describe Shoeboxed::Receipt do
       subject.attributes.delete("PaymentType")
       expect(subject.issuer).to be_nil
     end
+
+    it "returns nil if 'PaymentType' is nil" do
+      subject.attributes["PaymentType"] = nil
+      expect(subject.issuer).to be_nil
+    end
   end
 
   describe "#last_four_digits" do
@@ -79,6 +89,11 @@ describe Shoeboxed::Receipt do
       subject.attributes.delete("PaymentType")
       expect(subject.last_four_digits).to be_nil
     end
+
+    it "returns nil if 'PaymentType' is nil" do
+      subject.attributes["PaymentType"] = nil
+      expect(subject.last_four_digits).to be_nil
+    end
   end
 
   describe "#payment_type" do
@@ -88,6 +103,11 @@ describe Shoeboxed::Receipt do
 
     it "returns nil if 'PaymentType' is missing" do
       subject.attributes.delete("PaymentType")
+      expect(subject.payment_type).to be_nil
+    end
+
+    it "returns nil if 'PaymentType' is nil" do
+      subject.attributes["PaymentType"] = nil
       expect(subject.payment_type).to be_nil
     end
   end
