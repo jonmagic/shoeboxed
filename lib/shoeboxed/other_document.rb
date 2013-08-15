@@ -1,5 +1,5 @@
 class Shoeboxed
-  class BusinessCard
+  class OtherDocument
     # Internal: Called during object instantiation.
     #
     # attributes - Hash of attributes returned from API request.
