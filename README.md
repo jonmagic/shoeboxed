@@ -1,3 +1,5 @@
+**I am abandoning this project and freeing up the name in rubygems.**
+
 # Shoeboxed
 
 A simple ruby client for the [Shoeboxed](http://shoeboxed.com) [API](http://developer.shoeboxed.com).
